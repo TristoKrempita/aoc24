@@ -8,9 +8,9 @@ import (
 
 func TestParser(t *testing.T) {
 	t.Run("test parsing one line", func(t *testing.T) {
-		inputString := "why()}''(!how()$~mul(420,484) ]}}mul(218,461),]"
+		inputString := "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
 		got := day3.ParseString(inputString)
-		want := 303778
+		want := 48
 
 		if got != want {
 			t.Errorf("got %d want %d", got, want)

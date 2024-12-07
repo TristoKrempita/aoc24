@@ -4,6 +4,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"strings"
 )
 
 func ParseFile(filename string) int {
@@ -16,8 +17,18 @@ func ParseFile(filename string) int {
 
 func ParseString(input string) int {
 	finalMult := 0
+	isParsing := true
 	for i, ch := range input {
-		if ch == rune('m') && i+2 < len(input) {
+		if ch == rune('d') {
+			if i+7 < len(input) && strings.Compare(string(input[i:i+7]), "don't()") == 0 {
+				isParsing = false
+			} else if i+4 < len(input) && strings.Compare(string(input[i:i+4]), "do()") == 0 {
+				isParsing = true
+			}
+		}
+
+		// Check if mul(xxx,xxx)
+		if ch == rune('m') && i+2 < len(input) && isParsing {
 			if int32(input[i+1]) == rune('u') && int32(input[i+2]) == rune('l') {
 				// mul is recognized
 				left, ok, indexOfComma := readUntilComma(input[i+2:])
