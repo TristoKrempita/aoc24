@@ -8,12 +8,38 @@ import (
 	"strings"
 )
 
+func CrossSearchFromFile(filename string) int {
+	f, err := os.ReadFile(filename)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	return CrossSearch(string(f))
+}
+
 func WordSearchFromFile(filename string) int {
 	f, err := os.ReadFile(filename)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 	return WordSearch(string(f))
+}
+
+func CrossSearch(crossword string) (totalX_mas int) {
+	crosswordSlice := stringToSlice(crossword)
+	// printCrosswordSlice(crosswordSlice)
+	// row
+	for j := 0; j < len(crosswordSlice); j++ {
+		// column
+		for i := 0; i < len(crosswordSlice[j]); i++ {
+			if crosswordSlice[i][j] == rune('A') {
+				if checkFirstDiagonal(crosswordSlice, i, j) &&
+					checkSecondDiagonal(crosswordSlice, i, j) {
+					totalX_mas++
+				}
+			}
+		}
+	}
+	return
 }
 
 func WordSearch(crossword string) (totalXmas int) {
@@ -181,4 +207,32 @@ func extractDiagonalDownLeft(crosswordSlice [][]rune, row, col int) (xmasSlice [
 		xmasSlice = append(xmasSlice, crosswordSlice[row+i][col-i])
 	}
 	return
+}
+
+func checkFirstDiagonal(crosswordSlice [][]rune, row, col int) bool {
+	var currentDiagonal []rune
+	if row+1 < len(crosswordSlice) && row-1 >= 0 && col+1 < len(crosswordSlice[row]) && col-1 >= 0 {
+		currentDiagonal = append(currentDiagonal, crosswordSlice[row-1][col-1])
+		currentDiagonal = append(currentDiagonal, crosswordSlice[row][col])
+		currentDiagonal = append(currentDiagonal, crosswordSlice[row+1][col+1])
+	}
+	if strings.Compare(string(currentDiagonal), "MAS") == 0 ||
+		strings.Compare(string(currentDiagonal), "SAM") == 0 {
+		return true
+	}
+	return false
+}
+
+func checkSecondDiagonal(crosswordSlice [][]rune, row, col int) bool {
+	var currentDiagonal []rune
+	if row+1 < len(crosswordSlice) && row-1 >= 0 && col+1 < len(crosswordSlice[row]) && col-1 >= 0 {
+		currentDiagonal = append(currentDiagonal, crosswordSlice[row+1][col-1])
+		currentDiagonal = append(currentDiagonal, crosswordSlice[row][col])
+		currentDiagonal = append(currentDiagonal, crosswordSlice[row-1][col+1])
+	}
+	if strings.Compare(string(currentDiagonal), "MAS") == 0 ||
+		strings.Compare(string(currentDiagonal), "SAM") == 0 {
+		return true
+	}
+	return false
 }

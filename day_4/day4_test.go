@@ -25,4 +25,23 @@ S.S.S.S.SS
 			t.Errorf("got %d want %d", got, want)
 		}
 	})
+
+	t.Run("find X-MAS in example string", func(t *testing.T) {
+		exampleSearch := `.M.S......
+..A..MSMS.
+.M.S.MAA..
+..A.ASMSM.
+.M.S.M....
+..........
+S.S.S.S.S.
+.A.A.A.A..
+M.M.M.M.M.
+..........`
+		got := day4.CrossSearch(exampleSearch)
+		want := 9
+
+		if got != want {
+			t.Errorf("got %d want %d", got, want)
+		}
+	})
 }
